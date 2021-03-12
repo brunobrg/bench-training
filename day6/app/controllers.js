@@ -2,9 +2,10 @@ const { Product } = require('./models');
 
 
 class ProductController {
-    static async list (request, response) {
+    async list (request, response) {
         try {
             const products = await Product.findAll();
+            console.log(products);
             response.send(products);
         } catch (e) {
             console.log(e);
@@ -12,9 +13,10 @@ class ProductController {
         }
     }
 
-    static async add (request, response) {
+    async add (request, response) {
         const product = request.body;
         try {
+            console.log(product);
             const new_product = await Product.create(product);
             response.send(new_product);
         } catch (e) {
@@ -23,7 +25,7 @@ class ProductController {
         }
     }
 
-    static async get (request, response) {
+    async get (request, response) {
         const { id } = request.params;
         try {
             const product = await Product.findByPk(id);
@@ -34,7 +36,7 @@ class ProductController {
         }
     }
 
-    static async update (request, response) {
+    async update (request, response) {
         const { id } = request.params;
         const new_values = request.body;
         try {
@@ -42,6 +44,7 @@ class ProductController {
             for (let [key, value] of Object.entries(new_values)) {
                 product[key] = value    
             }
+            console.log(product);
             await product.save();
             response.send(product);
         } catch (e) {
@@ -50,7 +53,7 @@ class ProductController {
         }
     }
 
-    static async delete (request, response) {
+    async delete (request, response) {
         const { id } = request.params;
         try {
             const product = await Product.findByPk(id);
@@ -62,6 +65,6 @@ class ProductController {
     }
 }
 
-module.exports = {
-    ProductController
-}
+const productController = new ProductController();
+
+module.exports = productController
